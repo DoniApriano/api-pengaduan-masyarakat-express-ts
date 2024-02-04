@@ -37,7 +37,7 @@ export default class Validation {
 
         next();
     }
-    
+
     async loginValidation(req: Request, res: Response, next: NextFunction) {
         const { email, password } = req.body;
 
@@ -58,6 +58,33 @@ export default class Validation {
 
         next();
     }
+
+    async createPengaduanValidation(req: Request, res: Response, next: NextFunction) {
+        const { judul, deskripsi, foto, kategoriId } = req.body;
+
+        const data = {
+            judul, deskripsi, foto, kategoriId
+        };
+
+        const rules: Validator.Rules = {
+            'judul': 'required',
+            'deskripsi': 'required',
+            // Nggak tau validasi foto nya
+            'foto': '',
+            'kategoriId': 'required',
+        };
+
+        const validate = new Validator(data, rules);
+        if (validate.fails()) return res.status(400).json({
+            success: false,
+            message: validate.errors
+        });
+
+        next();
+    }
+
+
+
 
 
 
