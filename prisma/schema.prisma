@@ -20,6 +20,7 @@ model Pengguna {
     updatedAt DateTime    @updatedAt
     role      Role        @relation(fields: [roleId], references: [id])
     pengaduan Pengaduan[]
+    Tanggapan Tanggapan[]
 }
 
 model Role {
@@ -32,14 +33,16 @@ model Role {
 }
 
 model Pengaduan {
-    id         String   @unique @default(uuid())
+    id         String      @unique @default(uuid())
     judul      String
     deskripsi  String
     foto       String
+    status     Boolean     @default(false)
     kategoriId String
     penggunaId String
-    Kategori   Kategori @relation(fields: [kategoriId], references: [id])
-    Pengguna   Pengguna @relation(fields: [penggunaId], references: [id])
+    Kategori   Kategori    @relation(fields: [kategoriId], references: [id])
+    Pengguna   Pengguna    @relation(fields: [penggunaId], references: [id])
+    Tanggapan  Tanggapan?
 }
 
 model Kategori {
@@ -49,4 +52,14 @@ model Kategori {
     updatedAt DateTime @updatedAt
 
     pengaduan Pengaduan[]
+}
+
+model Tanggapan {
+    id          String    @unique @default(uuid())
+    penggunaId  String
+    pengaduanId String @unique
+    createdAt   DateTime  @default(now())
+    updatedAt   DateTime  @updatedAt
+    Pengguna    Pengguna  @relation(fields: [penggunaId], references: [id])
+    Pengaduan   Pengaduan @relation(fields: [pengaduanId], references: [id])
 }
