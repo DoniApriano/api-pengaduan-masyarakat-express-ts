@@ -3,6 +3,7 @@ import AuthRouter from './router/auth.router';
 import cookieParser from 'cookie-parser';
 import PengaduanRouter from './router/masyarakat/pengaduan.router';
 import { upload } from './config/multer';
+import KategoriRouter from './router/admin/kategori.router';
 
 
 class App {
@@ -10,12 +11,14 @@ class App {
     private PORT: number;
     private authRouter: AuthRouter;
     private pengaduanRouter: PengaduanRouter;
+    private kategoriRouter: KategoriRouter;
 
     constructor() {
         this.app = express();
         this.PORT = 8080;
         this.authRouter = new AuthRouter();
         this.pengaduanRouter = new PengaduanRouter();
+        this.kategoriRouter = new KategoriRouter();
 
         this.setupMiddleware();
         this.setupRoutes();
@@ -32,6 +35,7 @@ class App {
     private setupRoutes() {
         this.app.use('/auth', this.authRouter.getRouter());
         this.app.use('/pengaduan', this.pengaduanRouter.getRouter());
+        this.app.use('/kategori', this.kategoriRouter.getRouter());
     }
 
     private startServer() {
