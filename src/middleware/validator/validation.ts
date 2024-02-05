@@ -82,6 +82,26 @@ export default class Validation {
 
         next();
     }
+    
+    async createKategoriValidation(req: Request, res: Response, next: NextFunction) {
+        const { nama } = req.body;
+
+        const data = {
+            nama,
+        };
+
+        const rules: Validator.Rules = {
+            'nama': 'required',
+        };
+
+        const validate = new Validator(data, rules);
+        if (validate.fails()) return res.status(400).json({
+            success: false,
+            message: validate.errors
+        });
+
+        next();
+    }
 
 
 
