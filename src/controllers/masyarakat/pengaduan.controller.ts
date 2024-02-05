@@ -4,13 +4,16 @@ import AuthService from "../../services/auth.service";
 import { upload } from "../../config/multer";
 import path from "path";
 import fs from 'fs';
+import KategoriServie from "../../services/admin/kategori.service";
 
 export default class PengaduanController {
     private pengaduanService: PengaduanService;
     private authService: AuthService;
+    private kategoriService: KategoriServie;
 
     constructor() {
         this.pengaduanService = new PengaduanService();
+        this.kategoriService = new KategoriServie();
         this.authService = new AuthService();
 
         this.createPengaduan = this.createPengaduan.bind(this);
@@ -21,10 +24,13 @@ export default class PengaduanController {
     }
 
     async createPengaduan(req: Request, res: Response): Promise<Response<any, Record<string, any>> | undefined> {
-        /**
-         * Belum ada validasi kategori
-         */
         const { judul, deskripsi, kategoriId } = req.body;
+
+        const findKategori = await this.kategoriService.findOne(kategoriId);
+        if (!findKategori) return res.status(404).json({
+            success: false,
+            message: "Kategori tidak ditemukan",
+        });
 
         const email = res.locals.email;
         const findPengguna = await this.authService.findUser(email);
@@ -89,6 +95,14 @@ export default class PengaduanController {
             success: false,
             message: "Pengaduan tidak ditemukan",
         });
+
+        if (kategoriId) {
+            const findKategori = await this.kategoriService.findOne(kategoriId);
+            if (!findKategori) return res.status(404).json({
+                success: false,
+                message: "Kategori tidak ditemukan",
+            });
+        }
 
         const email = res.locals.email;
         const pengguna = await this.authService.findUser(email);
