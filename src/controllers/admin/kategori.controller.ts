@@ -15,85 +15,125 @@ export default class KategoriController {
     }
 
     async findAllKategori(req: Request, res: Response) {
-        const kategori = await this.kategoriService.read();
+        try {
+            const kategori = await this.kategoriService.read();
 
-        return res.status(200).json({
-            success: true,
-            message: "Berhasil menampilkan semua kategori",
-            data: kategori,
-        });
+            return res.status(200).json({
+                success: true,
+                message: "Berhasil menampilkan semua kategori",
+                data: kategori,
+            });
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({
+                success: true,
+                message: "Terjadi kesalahan",
+            });
+        }
     }
 
     async findOneKategori(req: Request, res: Response) {
-        const id = req.params.id;
-        const kategori = await this.kategoriService.findOne(id);
-        if (!kategori) return res.status(404).json({
-            success: true,
-            message: "Kategori tidak ditemukan",
-        });
+        try {
+            const id = req.params.id;
+            const kategori = await this.kategoriService.findOne(id);
+            if (!kategori) return res.status(404).json({
+                success: true,
+                message: "Kategori tidak ditemukan",
+            });
 
-        return res.status(200).json({
-            success: true,
-            message: "Berhasil menampilkan kategori",
-            data: kategori,
-        });
+            return res.status(200).json({
+                success: true,
+                message: "Berhasil menampilkan kategori",
+                data: kategori,
+            });
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({
+                success: true,
+                message: "Terjadi kesalahan",
+            });
+        }
     }
 
     async createKategori(req: Request, res: Response) {
-        const { nama } = req.body;
-        const kategori = await this.kategoriService.create({ nama });
-        if (!kategori) return res.status(400).json({
-            success: false,
-            message: "Gagal tambah kategori",
-        });
+        try {
+            const { nama } = req.body;
+            const kategori = await this.kategoriService.create({ nama });
+            if (!kategori) return res.status(400).json({
+                success: false,
+                message: "Gagal tambah kategori",
+            });
 
-        return res.status(201).json({
-            success: true,
-            message: "Berhasil menambah kategori",
-            data: kategori,
-        });
+            return res.status(201).json({
+                success: true,
+                message: "Berhasil menambah kategori",
+                data: kategori,
+            });
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({
+                success: true,
+                message: "Terjadi kesalahan",
+            });
+        }
     }
 
     async updateKategori(req: Request, res: Response) {
-        const { nama } = req.body;
-        const id = req.params.id;
-        const findKategori = await this.kategoriService.findOne(id);
-        if (!findKategori) return res.status(404).json({
-            success: true,
-            message: "Kategori tidak ditemukan",
-        });
+        try {
+            const { nama } = req.body;
+            const id = req.params.id;
+            const findKategori = await this.kategoriService.findOne(id);
+            if (!findKategori) return res.status(404).json({
+                success: true,
+                message: "Kategori tidak ditemukan",
+            });
 
-        const kategori = await this.kategoriService.update(id, { nama });
-        if (!kategori) return res.status(400).json({
-            success: false,
-            message: "Gagal update kategori",
-        });
+            const kategori = await this.kategoriService.update(id, { nama });
+            if (!kategori) return res.status(400).json({
+                success: false,
+                message: "Gagal update kategori",
+            });
 
-        return res.status(200).json({
-            success: true,
-            message: "Berhasil update kategori",
-            data: kategori,
-        });
+            return res.status(200).json({
+                success: true,
+                message: "Berhasil update kategori",
+                data: kategori,
+            });
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({
+                success: true,
+                message: "Terjadi kesalahan",
+            });
+        }
     }
 
     async deleteKategori(req: Request, res: Response) {
-        const id = req.params.id;
-        const findKategori = await this.kategoriService.findOne(id);
-        if (!findKategori) return res.status(404).json({
-            success: true,
-            message: "Kategori tidak ditemukan",
-        });
+        try {
+            const id = req.params.id;
+            const findKategori = await this.kategoriService.findOne(id);
+            if (!findKategori) return res.status(404).json({
+                success: true,
+                message: "Kategori tidak ditemukan",
+            });
 
-        const kategori = await this.kategoriService.delete(id);
-        if (!kategori) return res.status(400).json({
-            success: false,
-            message: "Gagal delete kategori",
-        });
+            const kategori = await this.kategoriService.delete(id);
+            if (!kategori) return res.status(400).json({
+                success: false,
+                message: "Gagal delete kategori",
+            });
 
-        return res.status(200).json({
-            success: true,
-            message: "Berhasil delete kategori",
-        });
+            return res.status(200).json({
+                success: true,
+                message: "Berhasil delete kategori",
+            });
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({
+                success: true,
+                message: "Terjadi kesalahan",
+            });
+        }
     }
 
 
