@@ -11,16 +11,16 @@ datasource db {
 }
 
 model Pengguna {
-    id        String      @unique @default(uuid())
-    email     String      @unique
-    nama      String
-    password  String
-    roleId    String
-    createdAt DateTime    @default(now())
-    updatedAt DateTime    @updatedAt
-    role      Role        @relation(fields: [roleId], references: [id])
-    pengaduan Pengaduan[]
-    Tanggapan Tanggapan[]
+    id             String      @unique @default(uuid())
+    email          String      @unique
+    nama           String
+    password       String
+    roleId         String
+    createdAt      DateTime    @default(now())
+    updatedAt      DateTime    @updatedAt
+    role           Role        @relation(fields: [roleId], references: [id])
+    pengaduan      Pengaduan[]
+    TanggapanAdmin Tanggapan[] @relation("tanggapanAdmin")
 }
 
 model Role {
@@ -33,15 +33,15 @@ model Role {
 }
 
 model Pengaduan {
-    id         String      @unique @default(uuid())
+    id         String     @unique @default(uuid())
     judul      String
     deskripsi  String
     foto       String
-    status     Boolean     @default(false)
+    status     Boolean    @default(false)
     kategoriId String
     penggunaId String
-    Kategori   Kategori    @relation(fields: [kategoriId], references: [id])
-    Pengguna   Pengguna    @relation(fields: [penggunaId], references: [id])
+    Kategori   Kategori   @relation(fields: [kategoriId], references: [id])
+    Pengguna   Pengguna   @relation(fields: [penggunaId], references: [id])
     Tanggapan  Tanggapan?
 }
 
@@ -56,10 +56,11 @@ model Kategori {
 
 model Tanggapan {
     id          String    @unique @default(uuid())
-    penggunaId  String
-    pengaduanId String @unique
+    adminId     String
+    pengaduanId String    @unique
+    tanggapan   String
     createdAt   DateTime  @default(now())
     updatedAt   DateTime  @updatedAt
-    Pengguna    Pengguna  @relation(fields: [penggunaId], references: [id])
+    Admin       Pengguna  @relation("tanggapanAdmin", fields: [adminId], references: [id])
     Pengaduan   Pengaduan @relation(fields: [pengaduanId], references: [id])
 }
